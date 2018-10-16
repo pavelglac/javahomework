@@ -5,19 +5,20 @@
  */
 package javahw;
 
-import java.util.Collection;
-import static java.util.Collections.list;
 import java.util.Random;
-import java.util.stream.Collectors;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -38,6 +39,7 @@ public class Javahomework
     private Castle region;
     private ListOfCastles listOfCastles;
     private Label label;
+    private String castle;
     private AnchorPane topAnchorPane;
     int order;
 
@@ -52,12 +54,12 @@ public class Javahomework
         Scene scene = new Scene(borderPane, 1000, 600);
         ToggleGroup group = new ToggleGroup();
         Random rand = new Random();
-
-
+        
         String[] regions = region.getRegionsNames();
         RadioButton[] buttons = new RadioButton[regions.length];;
         
-        for (int i = 0; i < regions.length; i++) {
+        for (int i = 0; i < regions.length; i++)
+        {
 
             buttons[i] = new RadioButton(regions[i].toString());
             buttons[i].setToggleGroup(group);
@@ -74,29 +76,22 @@ public class Javahomework
                     borderPane.setRight(null);
                     borderPane.setLeft(null);
                     topAnchorPane.getChildren().clear();
-                    Place list = region.getRegions().get(help);
+                    
+                    IPlace list = region.getRegions().get(help);
                     region.setRegion(list);
-//                    listOfCastles = new ListOfCastles(region.getRegion());
-//                    listOfCastles.update();
-//                    borderPane.setRight(listOfCastles.getList());
-                    
-//                    String[] neco = new String[region.getRegions().size()];
-//                    neco = region.getRegions().toArray(neco);
                     String[][] castles =  region.getRegion().getCastles();
-                    int x = 0;
                     
-                    for (int i = 0; i < region.getRegion().getCastles().length; i++) {
+                    int y = 0;                    
+                    for (int i = 0; i < region.getRegion().getCastles().length; i++)
+                    {
                         
                         String img = castles[i][1];
                         String name = castles[i][0];
                         Label label = new Label(name);
-//                        ImageView mapImageView = new ImageView(new Image(Javahomework.class.getResourceAsStream(img), 100, 100, false, false));
-//                        mapImageView.setX(x);
                         label.setGraphic(new ImageView(new Image(Javahomework.class.getResourceAsStream(img), 100, 100, false, false)));
-                        label.setLayoutY(x);
-                        x = x + 100;
+                        label.setLayoutY(y);
+                        y = y + 100;
                         topAnchorPane.getChildren().add(label);
-//                        borderPane.setLeft(topAnchorPane);
                     
                     }
                     
@@ -106,24 +101,56 @@ public class Javahomework
             });
             vbox.setAlignment(Pos.BASELINE_CENTER);
         }
-        
+     
         
         btn.setText("Hádej");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
+        btn.setOnAction(new EventHandler<ActionEvent>()
+        {
 
             @Override
-            public void handle(ActionEvent event) {
+            public void handle(ActionEvent event)
+            {
+                
                     listOfCastles = new ListOfCastles(region.getRegion());
                     listOfCastles.update();
-                    borderPane.setRight(listOfCastles.getList());
-                    topAnchorPane.getChildren().clear();
+                    ListView list = listOfCastles.getList();
                     
+                    list.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>()
+                    {
+                        @Override
+                        public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
+                        {
+                            if(newValue.equals(castle))
+                            {
+                                
+                                Alert alert = new Alert(AlertType.INFORMATION);
+                                alert.setTitle(null);
+                                alert.setHeaderText(null);
+                                alert.setContentText("Skvěle!");
+                                alert.showAndWait();
+
+                            }else
+                            {
+                                
+                                Alert alert = new Alert(AlertType.INFORMATION);
+                                alert.setTitle(null);
+                                alert.setHeaderText(null);
+                                alert.setContentText("Jste blízko, ale zkuste to znova.");
+                                alert.showAndWait();
+
+                            
+                            }
+                        }
+                    });
+                    
+                    borderPane.setRight(list);
+                    topAnchorPane.getChildren().clear();                    
                     String[][] castles =  region.getRegion().getCastles();
                     int  n = rand.nextInt(region.getRegion().getCastles().length);
                     ImageView mapImageView = new ImageView(new Image(Javahomework.class.getResourceAsStream(castles[n][1]), 300, 300, false, false));
+                    castle = castles[n][0];
                     topAnchorPane.getChildren().add(mapImageView);
-                    String[] neco = new String[region.getRegions().size()];
-                    neco = region.getRegions().toArray(neco);
+                    
             }
         });
 

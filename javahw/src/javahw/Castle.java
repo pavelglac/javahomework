@@ -6,21 +6,17 @@
 package javahw;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 /**
  *
  * @author pavel
  */
 public class Castle
-        implements IObserver
+        implements ICastle
 {
 
-    private List<IUpdateObserver> listOfObservers;
-    private Place region;
-    private ArrayList<Place> listOfRegions;
+    private IPlace region;
+    private ArrayList<IPlace> listOfRegions;
     private ArrayList<String> exportedRegionsHelp;
     private String[] exportedRegions;
 
@@ -28,7 +24,7 @@ public class Castle
     public Castle()
     {
         
-        listOfRegions = new ArrayList<Place>();
+        listOfRegions = new ArrayList<IPlace>();
         
         Place hradec = new Place("Královéhradecký kraj",
                 new String[]{"Zámek Častolovice", "/javahw/img/hradec/castolovice.jpg"},
@@ -44,22 +40,28 @@ public class Castle
                 new String[]{"Hrad Rychmburk", "/javahw/img/pardubice/rychmburk.jpg"},
                 new String[]{"Zámek Choltice", "/javahw/img/pardubice/choltice.jpg"},
                 new String[]{"Zámek Jaroměřice", "/javahw/img/pardubice/jaromerice.jpg"});
-            registerRegion(pardubice);
-            
-        Place plzen = new Place("Plzeňský kraj", new String[]{"Zámek Plzeň jedna", "img"}, new String[]{"Zámek Plzeň dva", "img"});
-            registerRegion(plzen);        
+            registerRegion(pardubice);         
+             
+        Place plzen = new Place("Plzeňský kraj",
+                new String[]{"Hrad Kašperk", "/javahw/img/plzen/kasperk.jpg"},
+                new String[]{"Hrad Klenová", "/javahw/img/plzen/klenova.jpg"},
+                new String[]{"Hrad Švihov", "/javahw/img/plzen/svihov.jpg"},
+                new String[]{"Zámek Bezdružice", "/javahw/img/plzen/bezdruzice.jpg"},
+                new String[]{"Zámek Bor", "/javahw/img/plzen/bor.jpg"});
+            registerRegion(plzen);   
+
        
         setRegion(hradec);
     }
     
-    public Place getRegion()
+    public IPlace getRegion()
     {
         
         return region;
         
     }
     
-    public void setRegion(Place place)
+    public void setRegion(IPlace place)
     {
         
         region = place;
@@ -80,7 +82,7 @@ public class Castle
         
         for (int i = 0; i < getRegions().size(); i++)
         {
-            Place item = getRegions().get(i);
+            IPlace item = getRegions().get(i);
             exportedRegionsHelp.add(item.getName());
             
         }
@@ -93,40 +95,10 @@ public class Castle
     }
     
     @Override
-    public ArrayList<Place> getRegions()
+    public ArrayList<IPlace> getRegions()
     {
         
         return listOfRegions;
         
     }
-
-    @Override
-    public void setObserver(IUpdateObserver observer)
-    {
-        
-        listOfObservers.add(observer);
-        
-    }
-
-    @Override
-    public void removeObserver(IUpdateObserver observer)
-    {
-        
-        listOfObservers.remove(observer);
-        
-    }
-
-    @Override
-    public void updateObserver()
-    {
-        
-        for (IUpdateObserver observer : listOfObservers)
-        {
-            
-            observer.update();
-            
-        }
-        
-    }
-
 }

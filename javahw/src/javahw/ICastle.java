@@ -18,8 +18,8 @@ public interface ICastle
     
        public String[] getRegionsNames();
        
-       public Place getRegion();
+       public IPlace getRegion();
        
-       public ArrayList<Place> getRegions();
+       public ArrayList<IPlace> getRegions();
     
 }

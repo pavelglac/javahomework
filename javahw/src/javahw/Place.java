@@ -16,8 +16,7 @@ public class Place
 {
 
     private final String name;    
-    private final String[][] castles;
-    
+    private final String[][] castles;    
     
 
     Place(String name, String[]... itemNames)
