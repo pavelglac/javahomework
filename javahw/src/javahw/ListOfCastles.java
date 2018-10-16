@@ -23,6 +23,7 @@ public class ListOfCastles
     public ListOfCastles(Place place) {
         this.place = place;
         list = new ListView<>();
+        list.setPrefWidth(200);
 
     }
     

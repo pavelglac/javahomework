@@ -20,8 +20,9 @@ public class Castle
 
     private List<IUpdateObserver> listOfObservers;
     private Place region;
-    private static final  String[] exportedRegions = {"Královéhradecký kraj","Pardubický kraj","Plzeňský kraj"};
     private ArrayList<Place> listOfRegions;
+    private ArrayList<String> exportedRegionsHelp;
+    private String[] exportedRegions;
 
     
     public Castle()
@@ -29,21 +30,28 @@ public class Castle
         
         listOfRegions = new ArrayList<Place>();
         
-        Place hradec = new Place(exportedRegions[0], new String[]{"Zámek jedna", "img"}, new String[]{"Zámek dva", "img"},new String[]{"Zámek tři", "img"});
+        Place hradec = new Place("Královéhradecký kraj",
+                new String[]{"Zámek Častolovice", "/javahw/img/hradec/castolovice.jpg"},
+                new String[]{"Zámek Náchod", "/javahw/img/hradec/nachod.jpg"},
+                new String[]{"Zámek Ratibořice", "/javahw/img/hradec/ratiborice.jpg"},
+                new String[]{"Zámek Dětenice", "/javahw/img/hradec/detenice.jpg"},
+                new String[]{"Hrad Potštejn", "/javahw/img/hradec/potstejn.jpg"});
             registerRegion(hradec);
             
-        Place pardubice = new Place(exportedRegions[1], new String[]{"Zámek Pardubice jedna", "img"}, new String[]{"Zámek Pardubice dva", "img"});
+        Place pardubice = new Place("Pardubický kraj",
+                new String[]{"Zámek Letohrad", "/javahw/img/pardubice/letohrad.jpg"},
+                new String[]{"Hrad Svojanov", "/javahw/img/pardubice/svojanov.jpg"},
+                new String[]{"Hrad Rychmburk", "/javahw/img/pardubice/rychmburk.jpg"},
+                new String[]{"Zámek Choltice", "/javahw/img/pardubice/choltice.jpg"},
+                new String[]{"Zámek Jaroměřice", "/javahw/img/pardubice/jaromerice.jpg"});
             registerRegion(pardubice);
             
-        Place plzen = new Place(exportedRegions[2], new String[]{"Zámek Plzeň jedna", "img"}, new String[]{"Zámek Plzeň dva", "img"});
-            registerRegion(plzen);
-        
-        
+        Place plzen = new Place("Plzeňský kraj", new String[]{"Zámek Plzeň jedna", "img"}, new String[]{"Zámek Plzeň dva", "img"});
+            registerRegion(plzen);        
+       
         setRegion(hradec);
-
-
     }
-
+    
     public Place getRegion()
     {
         
@@ -68,6 +76,17 @@ public class Castle
     @Override
     public String[] getRegionsNames()
     {
+        exportedRegionsHelp = new ArrayList<String>();
+        
+        for (int i = 0; i < getRegions().size(); i++)
+        {
+            Place item = getRegions().get(i);
+            exportedRegionsHelp.add(item.getName());
+            
+        }
+        
+        String[] exportedRegions = new String[exportedRegionsHelp.size()];
+        exportedRegions = exportedRegionsHelp.toArray(exportedRegions);
         
         return exportedRegions;
         
